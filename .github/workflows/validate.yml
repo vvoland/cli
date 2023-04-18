@@ -33,7 +33,7 @@ jobs:
           fetch-depth: 0
       -
         name: Run
-        uses: docker/bake-action@v2
+        uses: docker/bake-action@v3
         with:
           targets: ${{ matrix.target }}
 
