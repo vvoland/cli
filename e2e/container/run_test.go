@@ -2,6 +2,7 @@ package container
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/docker/cli/e2e/internal/fixtures"
@@ -147,4 +148,41 @@ func TestRunWithCgroupNamespace(t *testing.T) {
 	result := icmd.RunCommand("docker", "run", "--cgroupns=private", "--rm", fixtures.AlpineImage,
 		"/bin/grep", "-q", "':memory:/$'", "/proc/1/cgroup")
 	result.Assert(t, icmd.Success)
+}
+
+func TestMountSubvolume(t *testing.T) {
+	t.SkipNow() // TODO: Enable when testing against 1.44+
+	volName := "test-volume-" + t.Name()
+	icmd.RunCommand("docker", "volume", "create", volName).Assert(t, icmd.Success)
+
+	t.Cleanup(func() {
+		icmd.RunCommand("docker", "volume", "remove", "-f", volName).Assert(t, icmd.Success)
+	})
+
+	defaultMountOpts := []string{
+		"type=volume",
+		"src=" + volName,
+		"dst=/volume",
+	}
+
+	// Populate the volume with test data.
+	icmd.RunCommand("docker", "run", "--mount", strings.Join(defaultMountOpts, ","), fixtures.AlpineImage, "sh", "-c",
+		"echo foo > /volume/bar.txt && "+
+			"mkdir /volume/subdir && echo world > /volume/subdir/hello.txt;",
+	).Assert(t, icmd.Success)
+
+	runMount := func(cmd string, mountOpts ...string) *icmd.Result {
+		mountArg := strings.Join(append(defaultMountOpts, mountOpts...), ",")
+		return icmd.RunCommand("docker", "run", "--mount", mountArg, fixtures.AlpineImage, cmd, "/volume")
+	}
+
+	t.Run("subpath not exists", func(t *testing.T) {
+		runMount("ls", "volume-subpath=some-path/that/doesnt-exist").Assert(t, icmd.Expected{Err: "volume's path is not accessible", ExitCode: 125})
+	})
+	t.Run("subdirectory mount", func(t *testing.T) {
+		runMount("ls", "volume-subpath=subdir").Assert(t, icmd.Expected{Out: "hello.txt"})
+	})
+	t.Run("file mount", func(t *testing.T) {
+		runMount("cat", "volume-subpath=bar.txt").Assert(t, icmd.Expected{Out: "foo"})
+	})
 }
