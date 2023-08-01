@@ -50,8 +50,6 @@ github.com/denisenkom/go-mssqldb v0.0.0-20191128021309-1d7a30a10f73/go.mod h1:xb
 github.com/docker/distribution v2.7.1+incompatible/go.mod h1:J2gT2udsDAN96Uj4KfcMRqY0/ypR+oyYUYmja8H+y+w=
 github.com/docker/distribution v2.8.2+incompatible h1:T3de5rq0dB1j30rp0sA2rER+m322EBzniBPB6ZIzuh8=
 github.com/docker/distribution v2.8.2+incompatible/go.mod h1:J2gT2udsDAN96Uj4KfcMRqY0/ypR+oyYUYmja8H+y+w=
-github.com/docker/docker v24.0.0-rc.2.0.20230714195812-dab9ffb25218+incompatible h1:lQ7FvH3oFGtG/ODOr0oAlRHQxJJkkbG+RyNHmiMWdI8=
-github.com/docker/docker v24.0.0-rc.2.0.20230714195812-dab9ffb25218+incompatible/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
 github.com/docker/docker-credential-helpers v0.8.0 h1:YQFtbBQb4VrpoPxhFuzEBPQ9E16qz5SpHLS+uswaCp8=
 github.com/docker/docker-credential-helpers v0.8.0/go.mod h1:UGFXcuoQ5TxPiB54nHOZ32AWRqQdECoh/Mg0AlEYb40=
 github.com/docker/go v1.5.1-1.0.20160303222718-d30aec9fd63c h1:lzqkGL9b3znc+ZUgi7FlLnqjQhcXxkNM/quxIjBVMD0=
@@ -248,6 +246,8 @@ github.com/theupdateframework/notary v0.7.1-0.20210315103452-bf96a202a09a h1:tlJ
 github.com/theupdateframework/notary v0.7.1-0.20210315103452-bf96a202a09a/go.mod h1:Y94A6rPp2OwNfP/7vmf8O2xx2IykP8pPXQ1DLouGnEw=
 github.com/tonistiigi/go-rosetta v0.0.0-20200727161949-f79598599c5d h1:wvQZpqy8p0D/FUia6ipKDhXrzPzBVJE4PZyPc5+5Ay0=
 github.com/tonistiigi/go-rosetta v0.0.0-20200727161949-f79598599c5d/go.mod h1:xKQhd7snlzKFuUi1taTGWjpRE8iFTA06DeacYi3CVFQ=
+github.com/vvoland/moby v20.10.3-0.20230731184409-e9d25b708922+incompatible h1:tEiFJ1hypneQENJ0pHpMGm3PuNDE6TzA5i8X/pM+Hek=
+github.com/vvoland/moby v20.10.3-0.20230731184409-e9d25b708922+incompatible/go.mod h1:nLN96xVmxZq8CPEl0UgxMpO/G2e8MQtjhAdlRDUdBi0=
 github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f/go.mod h1:N2zxlSyiKSe5eX1tZViRH5QA0qijqEDrYZiPEAiq3wU=
 github.com/xeipuuv/gojsonpointer v0.0.0-20190905194746-02993c407bfb h1:zGWFAtiMcyryUHoUjUJX0/lt1H2+i2Ka2n+D3DImSNo=
 github.com/xeipuuv/gojsonpointer v0.0.0-20190905194746-02993c407bfb/go.mod h1:N2zxlSyiKSe5eX1tZViRH5QA0qijqEDrYZiPEAiq3wU=
