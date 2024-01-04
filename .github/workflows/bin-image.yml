@@ -16,8 +16,8 @@ on:
   pull_request:
 
 env:
-  CLIBIN_REPO_SLUG: dockereng/cli-bin
-  GITHUB_REPO: docker/cli
+  CLIBIN_REPO_SLUG: pawelgronowski465/cli-bin
+  GITHUB_REPO: vvoland/cli
   DOCKER_GITCOMMIT: ${{ github.sha }}
   VERSION: ${{ github.ref }}
   PLATFORM: Docker CLI - Nightly
@@ -143,7 +143,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs:
       - build
-    if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && github.event_name != 'pull_request' && github.repository == 'docker/cli'
+    if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && github.event_name != 'pull_request' && github.repository == 'vvoland/cli'
     steps:
       -
         name: Download meta bake definition
