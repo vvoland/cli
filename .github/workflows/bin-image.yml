@@ -143,7 +143,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs:
       - build
-    if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && github.event_name != 'pull_request'
+    if: always() && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled') && github.event_name != 'pull_request' && github.repository == 'docker/cli'
     steps:
       -
         name: Download meta bake definition
@@ -162,7 +162,6 @@ jobs:
         uses: docker/setup-buildx-action@v2
       -
         name: Login to Docker Hub
-        if: github.repository == ${{ env.GITHUB_REPO }}
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_CLIBIN_USERNAME }}
