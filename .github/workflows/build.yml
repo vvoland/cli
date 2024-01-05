@@ -111,7 +111,6 @@ jobs:
             type=ref,event=branch
             type=ref,event=pr
             type=semver,pattern={{version}}
-          bake-target: meta-helper
       -
         name: Login to DockerHub
         if: github.event_name != 'pull_request'
