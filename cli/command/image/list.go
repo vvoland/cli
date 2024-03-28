@@ -24,6 +24,7 @@ type imagesOptions struct {
 	format      string
 	filter      opts.FilterOpt
 	calledAs    string
+	tree        bool
 }
 
 // NewImagesCommand creates a new `docker images` command
@@ -59,6 +60,9 @@ func NewImagesCommand(dockerCLI command.Cli) *cobra.Command {
 	flags.StringVar(&options.format, "format", "", flagsHelper.FormatHelp)
 	flags.VarP(&options.filter, "filter", "f", "Filter output based on conditions provided")
 
+	flags.BoolVar(&options.tree, "tree", false, "List multi-platform images tree [experimental, behavior may change]")
+	flags.SetAnnotation("tree", "api", []string{"1.46"})
+
 	return cmd
 }
 
@@ -73,6 +77,26 @@ func runImages(ctx context.Context, dockerCLI command.Cli, options imagesOptions
 	filters := options.filter.Value()
 	if options.matchName != "" {
 		filters.Add("reference", options.matchName)
+	}
+
+	if options.tree {
+		if options.quiet {
+			return fmt.Errorf("--quiet is not (yet) supported with --tree")
+		}
+		if options.noTrunc {
+			return fmt.Errorf("--no-trunc is not (yet) supported with --tree")
+		}
+		if options.showDigests {
+			return fmt.Errorf("--show-digest is not (yet) supported with --tree")
+		}
+		if options.format != "" {
+			return fmt.Errorf("--format is not (yet) supported with --tree")
+		}
+
+		return runTree(ctx, dockerCLI, treeOptions{
+			all:     options.all,
+			filters: filters,
+		})
 	}
 
 	images, err := dockerCLI.Client().ImageList(ctx, image.ListOptions{
