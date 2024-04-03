@@ -23,6 +23,7 @@ type pushOptions struct {
 	remote    string
 	untrusted bool
 	quiet     bool
+	platform  string
 }
 
 // NewPushCommand creates a new `docker push` command
@@ -48,6 +49,7 @@ func NewPushCommand(dockerCli command.Cli) *cobra.Command {
 	flags.BoolVarP(&opts.all, "all-tags", "a", false, "Push all tags of an image to the repository")
 	flags.BoolVarP(&opts.quiet, "quiet", "q", false, "Suppress verbose output")
 	command.AddTrustSigningFlags(flags, &opts.untrusted, dockerCli.ContentTrustEnabled())
+	command.AddPlatformFlag(flags, &opts.platform)
 
 	return cmd
 }
@@ -84,6 +86,7 @@ func RunPush(ctx context.Context, dockerCli command.Cli, opts pushOptions) error
 		All:           opts.all,
 		RegistryAuth:  encodedAuth,
 		PrivilegeFunc: requestPrivilege,
+		Platform:      opts.platform,
 	}
 
 	responseBody, err := dockerCli.Client().ImagePush(ctx, reference.FamiliarString(ref), options)
