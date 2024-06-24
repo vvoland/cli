@@ -18,7 +18,6 @@ import (
 	"github.com/docker/cli/cli/config"
 	"github.com/docker/cli/cli/config/configfile"
 	"github.com/docker/cli/cli/flags"
-	"github.com/docker/cli/cli/streams"
 	"github.com/docker/docker/api"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -254,7 +253,7 @@ func TestExperimentalCLI(t *testing.T) {
 				},
 			}
 
-			cli := &DockerCli{client: apiclient, err: streams.NewOut(os.Stderr)}
+			cli := &DockerCli{client: apiclient, err: os.Stderr}
 			config.SetDir(dir.Path())
 			err := cli.Initialize(flags.NewClientOptions())
 			assert.NilError(t, err)

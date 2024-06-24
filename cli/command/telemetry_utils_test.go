@@ -136,7 +136,7 @@ func TestStdioAttributes(t *testing.T) {
 			cli := &DockerCli{
 				in:  streams.NewIn(io.NopCloser(strings.NewReader(""))),
 				out: streams.NewOut(outBuffer),
-				err: streams.NewOut(errBuffer),
+				err: errBuffer,
 			}
 			cli.In().SetIsTerminal(tc.stdinTty)
 			cli.Out().SetIsTerminal(tc.stdoutTty)

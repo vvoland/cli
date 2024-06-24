@@ -28,8 +28,7 @@ type FakeCli struct {
 	configfile       *configfile.ConfigFile
 	out              *streams.Out
 	outBuffer        *bytes.Buffer
-	err              *streams.Out
-	errBuffer        *bytes.Buffer
+	err              *bytes.Buffer
 	in               *streams.In
 	server           command.ServerInfo
 	notaryClientFunc NotaryClientFuncType
@@ -49,8 +48,7 @@ func NewFakeCli(apiClient client.APIClient, opts ...func(*FakeCli)) *FakeCli {
 		client:    apiClient,
 		out:       streams.NewOut(outBuffer),
 		outBuffer: outBuffer,
-		err:       streams.NewOut(errBuffer),
-		errBuffer: errBuffer,
+		err:       errBuffer,
 		in:        streams.NewIn(io.NopCloser(strings.NewReader(""))),
 		// Use an empty string for filename so that tests don't create configfiles
 		// Set cli.ConfigFile().Filename to a tempfile to support Save.
@@ -69,7 +67,7 @@ func (c *FakeCli) SetIn(in *streams.In) {
 }
 
 // SetErr sets the stderr stream for the cli to the specified io.Writer
-func (c *FakeCli) SetErr(err *streams.Out) {
+func (c *FakeCli) SetErr(err *bytes.Buffer) {
 	c.err = err
 }
 
@@ -114,7 +112,7 @@ func (c *FakeCli) Out() *streams.Out {
 }
 
 // Err returns the output stream (stderr) the cli should write on
-func (c *FakeCli) Err() *streams.Out {
+func (c *FakeCli) Err() io.Writer {
 	return c.err
 }
 
@@ -155,13 +153,13 @@ func (c *FakeCli) OutBuffer() *bytes.Buffer {
 
 // ErrBuffer Buffer returns the stderr buffer
 func (c *FakeCli) ErrBuffer() *bytes.Buffer {
-	return c.errBuffer
+	return c.err
 }
 
 // ResetOutputBuffers resets the .OutBuffer() and.ErrBuffer() back to empty
 func (c *FakeCli) ResetOutputBuffers() {
 	c.outBuffer.Reset()
-	c.errBuffer.Reset()
+	c.err.Reset()
 }
 
 // SetNotaryClient sets the internal getter for retrieving a NotaryClient
