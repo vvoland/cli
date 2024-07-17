@@ -78,15 +78,17 @@ func TestRunAttachTermination(t *testing.T) {
 	assert.Equal(t, fakeCLI.In().IsTerminal(), true)
 	assert.Equal(t, fakeCLI.Out().IsTerminal(), true)
 
+	finished := make(chan error, 1)
 	cmd := NewRunCommand(fakeCLI)
 	cmd.SetArgs([]string{"-it", "busybox"})
 	cmd.SilenceUsage = true
 	go func() {
-		assert.ErrorIs(t, cmd.ExecuteContext(ctx), context.Canceled)
+		finished <- cmd.ExecuteContext(ctx)
 	}()
 
 	select {
 	case <-time.After(5 * time.Second):
+		cancel()
 		t.Fatal("containerAttachFunc was not called before the 5 second timeout")
 	case <-attachCh:
 	}
@@ -97,6 +99,14 @@ func TestRunAttachTermination(t *testing.T) {
 		cancel()
 		t.Fatal("containerKillFunc was not called before the 5 second timeout")
 	case <-killCh:
+	}
+
+	select {
+	case <-time.After(5 * time.Second):
+		cancel()
+		t.Fatal("cmd.ExecuteContext was not finished before the 5 second timeout")
+	case err := <-finished:
+		assert.ErrorIs(t, err, context.Canceled)
 	}
 }
 
